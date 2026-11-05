@@ -13,6 +13,21 @@ maplibregl.setWorkerUrl(maplibreWorkerUrl)
 const MADRID_CENTER = [-3.7, 40.4]
 const INITIAL_ZOOM = 10
 
+// The map can't be panned or zoomed out past this box (MapLibre's maxBounds
+// keeps the whole viewport inside it). It's deliberately much bigger than
+// Spain, because a box hugging Spain stops zooming out as soon as the
+// screen's width (or, on a phone, height) fills it, cutting the rest off: the
+// Canarias end up out of view. Longitudes as in ~/twiner's basemap extract;
+// the extra latitude is for phones, whose zoom-out is limited by the box's
+// height: with it, zoomed all the way out, the peninsula, Baleares, Canarias,
+// Ceuta and Melilla fit on screen with room to spare (~1.6x Spain's width in
+// portrait on a phone, ~2.7x on desktop).
+/** @type {[[number, number], [number, number]]} */
+const MAP_BOUNDS = [
+  [-36.65, 5],
+  [27.07, 58],
+]
+
 const BUS_PATH =
   'M4 16c0 .88.39 1.67 1 2.22V20c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h8v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1.78c.61-.55 1-1.34 1-2.22V6c0-3.5-3.58-4-8-4s-8 .5-8 4v10zm3.5 1c-.83 0-1.5-.67-1.5-1.5S6.67 14 7.5 14s1.5.67 1.5 1.5S8.33 17 7.5 17zm9 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm1.5-6H6V6h12v5z'
 
@@ -197,6 +212,7 @@ const MapView = forwardRef(function MapView(
       style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
       center: MADRID_CENTER,
       zoom: INITIAL_ZOOM,
+      maxBounds: MAP_BOUNDS,
     })
     // Zoom +/- (and the compass) are skipped on mobile: pinch-to-zoom already
     // covers it there, and the buttons only add to an already-tight top-right
