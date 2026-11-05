@@ -7,7 +7,9 @@ import regionData from '../data/regions.json'
 //   - links: the official page for each donation type ("sangre" is the
 //     region's transfusion centre / blood bank home page; "plasma" and
 //     "medula" are its pages for those, where it has one), opened from the
-//     info icon next to the header's region dropdown
+//     info icon next to the header's region dropdown; "requirements" is the
+//     page listing who can donate (age, weight, intervals…), linked from the
+//     header's "Requisitos para donar" — these vary slightly by region
 //   - medula: how to register as a bone marrow donor there (see lib/medula.js)
 // Kept in alphabetical order, since its keys are also the header's region
 // dropdown options.
@@ -20,6 +22,11 @@ export function regionLink(region, donationType) {
   if (!links) return null
   const url = links[donationType] ?? links.sangre
   return { url, isTypeSpecific: donationType !== 'sangre' && Boolean(links[donationType]) }
+}
+
+// The region's official page on who can donate blood, or null if unknown.
+export function requirementsLink(region) {
+  return regionData[region]?.links?.requirements ?? null
 }
 
 // regionBoundaries.json holds just these regions' real polygons, trimmed

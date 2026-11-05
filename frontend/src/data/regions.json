@@ -3,7 +3,8 @@
     "links": {
       "sangre": "https://www.sspa.juntadeandalucia.es/servicioandaluzdesalud/ciudadania/donar-sangre",
       "plasma": "https://www.sspa.juntadeandalucia.es/servicioandaluzdesalud/ciudadania/donar-sangre/donar-plasma",
-      "medula": "https://www.sspa.juntadeandalucia.es/servicioandaluzdesalud/ramttc/donantes/otras-donaciones/donar-medula"
+      "medula": "https://www.sspa.juntadeandalucia.es/servicioandaluzdesalud/ramttc/donantes/otras-donaciones/donar-medula",
+      "requirements": "https://www.sspa.juntadeandalucia.es/servicioandaluzdesalud/ciudadania/donar-sangre/preguntas-frecuentes-sobre-la-donacion-de-sangre"
     },
     "medula": {
       "where": "fixed",
@@ -14,7 +15,8 @@
     "links": {
       "sangre": "https://bancosangrearagon.org/",
       "plasma": "https://bancosangrearagon.org/donacion-de-plasma-sanguineo/",
-      "medula": "https://bancosangrearagon.org/donacion-de-medula/"
+      "medula": "https://bancosangrearagon.org/donacion-de-medula/",
+      "requirements": "https://bancosangrearagon.org/donacion-de-sangre/"
     },
     "medula": {
       "where": "all",
@@ -26,7 +28,8 @@
     "links": {
       "sangre": "https://efectodonacion.com/",
       "plasma": "https://efectodonacion.com/plasma/",
-      "medula": "https://efectodonacion.com/donacion-de-medula/"
+      "medula": "https://efectodonacion.com/donacion-de-medula/",
+      "requirements": "https://efectodonacion.com/quien-puede-ser-donante/"
     },
     "medula": {
       "where": "centres",
@@ -49,7 +52,8 @@
   },
   "Cantabria": {
     "links": {
-      "sangre": "https://www.hdsc.org/"
+      "sangre": "https://www.hdsc.org/",
+      "requirements": "https://www.hdsc.org/donacion/"
     },
     "medula": {
       "where": "fixed",
@@ -61,7 +65,8 @@
     "links": {
       "sangre": "https://www.centrodehemoterapiacyl.es/",
       "plasma": "https://www.centrodehemoterapiacyl.es/aferesis/",
-      "medula": "https://www.saludcastillayleon.es/es/donaciones-trasplantes/donacion-medula-osea"
+      "medula": "https://www.saludcastillayleon.es/es/donaciones-trasplantes/donacion-medula-osea",
+      "requirements": "https://www.centrodehemoterapiacyl.es/requisitos-donacion/"
     },
     "medula": {
       "where": "none",
@@ -73,7 +78,8 @@
   "Castilla-La Mancha": {
     "links": {
       "sangre": "https://sanidad.castillalamancha.es/ciudadanos/hazte-donante-sangre/puntos-fijos-de-donacion",
-      "medula": "https://sanidad.castillalamancha.es/ciudadanos/donantes/donantes-de-medula-osea-en-castilla-la-mancha"
+      "medula": "https://sanidad.castillalamancha.es/ciudadanos/donantes/donantes-de-medula-osea-en-castilla-la-mancha",
+      "requirements": "https://sanidad.castillalamancha.es/ciudadanos/hazte-donante-sangre/quien-puede-donar-sangre"
     },
     "medula": {
       "where": "none",
@@ -86,7 +92,8 @@
     "links": {
       "sangre": "https://www.bancsang.net/",
       "plasma": "https://www.bancsang.net/es/donaciones/plasma/",
-      "medula": "https://www.bancsang.net/es/donaciones/medula-osea/"
+      "medula": "https://www.bancsang.net/es/donaciones/medula-osea/",
+      "requirements": "https://www.bancsang.net/es/donaciones/sangre/"
     },
     "medula": {
       "where": "all",
@@ -99,7 +106,8 @@
     "links": {
       "sangre": "https://www.comunidad.madrid/hospital/centrodetransfusion/",
       "plasma": "https://www.comunidad.madrid/hospital/centrodetransfusion/ciudadanos/es-plasma",
-      "medula": "https://www.comunidad.madrid/donarmedula"
+      "medula": "https://www.comunidad.madrid/donarmedula",
+      "requirements": "https://www.comunidad.madrid/servicios/salud/donacion-sangre"
     },
     "medula": {
       "where": "fixed",
@@ -111,7 +119,8 @@
     "links": {
       "sangre": "https://adona.es/es/",
       "plasma": "https://adona.es/es/dona-sangre/reservar-cita",
-      "medula": "https://adona.es/es/hazte-donante/puedo-donar-medula"
+      "medula": "https://adona.es/es/hazte-donante/puedo-donar-medula",
+      "requirements": "https://adona.es/es/hazte-donante/puedo-donar-sangre"
     },
     "medula": {
       "where": "all",
@@ -123,7 +132,8 @@
     "links": {
       "sangre": "https://centro-transfusion.san.gva.es/",
       "plasma": "https://centro-transfusion.san.gva.es/es/plasmaferesi",
-      "medula": "https://centro-transfusion.san.gva.es/es/registro-de-donantes-de-medula-osea"
+      "medula": "https://centro-transfusion.san.gva.es/es/registro-de-donantes-de-medula-osea",
+      "requirements": "https://centro-transfusion.san.gva.es/es/requisitos"
     },
     "medula": {
       "where": "centres",
@@ -139,7 +149,8 @@
   "Extremadura": {
     "links": {
       "sangre": "https://saludextremadura.ses.es/bancodesangre/",
-      "medula": "https://admo.es/hazte-donante/"
+      "medula": "https://admo.es/hazte-donante/",
+      "requirements": "https://www.juntaex.es/w/banco-de-sangre"
     },
     "medula": {
       "where": "none",
@@ -152,7 +163,8 @@
     "links": {
       "sangre": "https://ados.sergas.gal/",
       "plasma": "https://ados.sergas.gal/cartafol/Sangue-Plasmaferesis",
-      "medula": "https://ados.sergas.gal/cartafol/medula-doazon"
+      "medula": "https://ados.sergas.gal/cartafol/medula-doazon",
+      "requirements": "https://ados.sergas.gal/cartafol/Sangue-doazon?idioma=es"
     },
     "medula": {
       "where": "none",
@@ -164,7 +176,8 @@
   "Illes Balears": {
     "links": {
       "sangre": "https://www.donasang.org/es_index.php",
-      "plasma": "https://www.donasang.org/donacio-per-aferesis/es_index.php"
+      "plasma": "https://www.donasang.org/donacio-per-aferesis/es_index.php",
+      "requirements": "https://www.donasang.org/puc-donar/es_index.html"
     },
     "medula": {
       "where": "centres",
@@ -179,7 +192,8 @@
     "links": {
       "sangre": "https://www.bancosangrerioja.org/",
       "plasma": "https://www.bancosangrerioja.org/donacion/donacion-aferesis",
-      "medula": "https://www.riojasalud.es/servicios/trasplantes/articulos/donacion-de-medula-osea"
+      "medula": "https://www.riojasalud.es/servicios/trasplantes/articulos/donacion-de-medula-osea",
+      "requirements": "https://www.bancosangrerioja.org/donacion/puedo-donar-sangre"
     },
     "medula": {
       "where": "none",
@@ -204,7 +218,8 @@
     "links": {
       "sangre": "https://donantesdesangre.eus/",
       "plasma": "https://donantesdesangre.eus/donar-plasma/",
-      "medula": "https://www.osakidetza.euskadi.eus/me-interesa/-/donacion-de-medula-osea/"
+      "medula": "https://www.osakidetza.euskadi.eus/me-interesa/-/donacion-de-medula-osea/",
+      "requirements": "https://donantesdesangre.eus/es/puedo-donar/"
     },
     "medula": {
       "where": "none",
@@ -217,7 +232,8 @@
     "links": {
       "sangre": "https://donasturias.org/",
       "plasma": "https://donasturias.org/aferesis/",
-      "medula": "https://donasturias.org/medula-osea/"
+      "medula": "https://donasturias.org/medula-osea/",
+      "requirements": "https://donasturias.org/quien-puede-donar/"
     },
     "medula": {
       "where": "none",
@@ -229,7 +245,8 @@
     "links": {
       "sangre": "https://www.murciasalud.es/web/centro-regional-de-hemodonacion",
       "plasma": "https://www.murciasalud.es/web/centro-regional-de-hemodonacion/donacion-de-plasma",
-      "medula": "https://www.murciasalud.es/web/centro-regional-de-hemodonacion/quiero-donar"
+      "medula": "https://www.murciasalud.es/web/centro-regional-de-hemodonacion/quiero-donar",
+      "requirements": "https://www.murciasalud.es/web/centro-regional-de-hemodonacion/puedo-donar"
     },
     "medula": {
       "where": "all",
