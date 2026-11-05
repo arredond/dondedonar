@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+# Start / stop the local frontend dev server (Vite) in the background.
+#
+#   bin/dondedonar start   # serves on all interfaces, so phones on the LAN can open it
+#   bin/dondedonar stop
+#
+# The server's PID and log live in .dondedonar/ at the repo root (gitignored).
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+FRONTEND="$ROOT/frontend"
+STATE="$ROOT/.dondedonar"
+PIDFILE="$STATE/dev.pid"
+LOGFILE="$STATE/dev.log"
+
+running_pid() {
+  [[ -f "$PIDFILE" ]] || return 1
+  local pid
+  pid="$(cat "$PIDFILE")"
+  if kill -0 "$pid" 2>/dev/null; then
+    echo "$pid"
+  else
+    rm -f "$PIDFILE"
+    return 1
+  fi
+}
+
+print_urls() {
+  grep -E "Local:|Network:" "$LOGFILE" | sed -E 's/\x1b\[[0-9;]*m//g'
+}
+
+start() {
+  if pid="$(running_pid)"; then
+    echo "Already running (PID $pid):"
+    print_urls
+    return 0
+  fi
+
+  if [[ ! -d "$FRONTEND/node_modules" ]]; then
+    echo "Installing frontend dependencies..."
+    (cd "$FRONTEND" && npm install)
+  fi
+
+  mkdir -p "$STATE"
+  # Job control (set -m) puts the server in its own process group, whose ID
+  # is the PID we record; stop kills that whole group, since vite (and npm,
+  # if it were in the chain) spawn child processes that would otherwise be
+  # left running.
+  cd "$FRONTEND"
+  set -m
+  nohup ./node_modules/.bin/vite --host >"$LOGFILE" 2>&1 &
+  echo $! >"$PIDFILE"
+  set +m
+  cd - >/dev/null
+
+  # Wait up to ~15s for Vite to print its URLs.
+  for _ in $(seq 1 30); do
+    if grep -q "Local:" "$LOGFILE" 2>/dev/null; then
+      echo "Dev server started (PID $(cat "$PIDFILE")):"
+      print_urls
+      return 0
+    fi
+    if ! running_pid >/dev/null; then
+      echo "Dev server exited during startup. Log ($LOGFILE):" >&2
+      cat "$LOGFILE" >&2
+      return 1
+    fi
+    sleep 0.5
+  done
+  echo "Dev server is running but hasn't reported its URLs yet; see $LOGFILE" >&2
+}
+
+stop() {
+  if ! pid="$(running_pid)"; then
+    echo "Not running."
+    return 0
+  fi
+  kill -- "-$pid" 2>/dev/null || true
+  for _ in $(seq 1 20); do
+    kill -0 -- "-$pid" 2>/dev/null || break
+    sleep 0.25
+  done
+  if kill -0 -- "-$pid" 2>/dev/null; then
+    kill -9 -- "-$pid"
+  fi
+  rm -f "$PIDFILE"
+  echo "Dev server stopped."
+}
+
+case "${1:-}" in
+  start) start ;;
+  stop) stop ;;
+  *)
+    echo "Usage: $(basename "$0") {start|stop}" >&2
+    exit 1
+    ;;
+esac

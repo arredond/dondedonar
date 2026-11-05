@@ -11,6 +11,17 @@ uv run ruff format etl/
 uv run ruff check etl/
 ```
 
+## Running the app locally
+
+Always start and stop the frontend dev server with the helper script, never `npm run dev` directly:
+
+```bash
+bin/dondedonar start   # Vite in the background on all interfaces (LAN-reachable); prints the URLs
+bin/dondedonar stop
+```
+
+It keeps its PID and log in `.dondedonar/` (gitignored); check `.dondedonar/dev.log` if the server misbehaves.
+
 ## Checks
 
 `pre-commit` runs these on every commit (install once with `uv run pre-commit install`; run all with `uv run pre-commit run --all-files`):

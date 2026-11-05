@@ -44,9 +44,8 @@ atenderte lo antes posible.
 
 **Frontend:**
 ```bash
-cd frontend
-npm install
-npm run dev
+bin/dondedonar start  # instala dependencias si hace falta y arranca Vite en segundo plano
+bin/dondedonar stop
 ```
 
 **ETL:**
