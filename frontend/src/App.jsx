@@ -20,6 +20,8 @@ export default function App() {
   // and "sangre" is the donation type (picked from the header title).
   const [selectedDate, setSelectedDate] = useState(defaultSelectedDate)
   const [selectedPoint, setSelectedPoint] = useState(null)
+  // The list card under the mouse, highlighted on the map (see MapView).
+  const [hoveredPoint, setHoveredPoint] = useState(null)
   const [showList, setShowList] = useState(false)
   // Single-select, not independent toggles: every point takes whole blood, but
   // plasma/médula are only taken at a handful of points, so showing "sangre OR
@@ -100,6 +102,16 @@ export default function App() {
     [openNowMobilePoints, donationType]
   )
 
+  // While a newly picked date's mobile points load, keep showing the ones
+  // already on screen (as filtered then) rather than none, and swap in the new
+  // set only once it's there: emptying the map in between made every mobile
+  // marker blink out and back, even spots open on both days (MapView keeps
+  // those in place across the swap). Assigned during render on purpose: it's
+  // idempotent, and an effect would show the stale value for a frame.
+  const shownMobilePointsRef = useRef(visibleMobilePoints)
+  if (!loadingMobile) shownMobilePointsRef.current = visibleMobilePoints
+  const shownMobilePoints = shownMobilePointsRef.current
+
   // The region named in the header title (and driving which region's blood
   // levels are fetched) — whichever region's real boundary the map center
   // currently falls inside (see regionAt in lib/regions.js), falling back to
@@ -142,8 +154,9 @@ export default function App() {
           <MapView
             ref={mapViewRef}
             fixedPoints={visibleFixedPoints}
-            mobilePoints={visibleMobilePoints}
+            mobilePoints={shownMobilePoints}
             selectedPoint={selectedPoint}
+            hoveredPoint={hoveredPoint}
             onSelectPoint={setSelectedPoint}
             onUserLocation={setUserLocation}
             onCenterChange={setMapCenter}
@@ -198,10 +211,14 @@ export default function App() {
             {showList ? (
               <ListPanel
                 fixedPoints={visibleFixedPoints}
-                mobilePoints={visibleMobilePoints}
+                mobilePoints={shownMobilePoints}
                 selectedPoint={selectedPoint}
                 onSelectPoint={setSelectedPoint}
-                onClose={() => setShowList(false)}
+                onHoverPoint={setHoveredPoint}
+                onClose={() => {
+                  setHoveredPoint(null)
+                  setShowList(false)
+                }}
                 refPoint={userLocation ?? mapCenter}
                 locationGranted={userLocation !== null}
               />

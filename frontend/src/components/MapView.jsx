@@ -1,6 +1,13 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
-import maplibregl from 'maplibre-gl'
+import * as maplibregl from 'maplibre-gl'
+import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url'
 import { isPermanentlyClosed, isTemporarilyClosed } from '../lib/openingHours'
+
+// MapLibre 6 looks for its web worker next to its own module file
+// (import.meta.url), which no longer holds once Vite bundles (or pre-bundles,
+// in dev) maplibre-gl into our code — the map then fails with "Worker failed
+// to load". Pointing it at the worker file Vite emits as an asset fixes both.
+maplibregl.setWorkerUrl(maplibreWorkerUrl)
 
 /** @type {[number, number]} */
 const MADRID_CENTER = [-3.7, 40.4]
@@ -24,6 +31,9 @@ function busSvg(color) {
   </svg>`
 }
 
+const MARKER_SHADOW = '0 1px 4px rgba(0,0,0,.25)'
+const HOVER_SHADOW = `0 0 0 4px rgba(220,38,38,.3), ${MARKER_SHADOW}`
+
 function makeMarkerEl(isFixed, isSelected) {
   const el = document.createElement('div')
   const border = isSelected ? '#dc2626' : '#111827'
@@ -33,8 +43,8 @@ function makeMarkerEl(isFixed, isSelected) {
     width:36px;height:36px;border-radius:50%;
     border:2px solid ${border};background:${bg};
     display:flex;align-items:center;justify-content:center;
-    cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.25);
-    transition:border-color .15s,background .15s;
+    cursor:pointer;box-shadow:${MARKER_SHADOW};
+    transition:border-color .15s,background .15s,box-shadow .15s;
   `
   el.innerHTML = isFixed ? hospitalSvg(color) : busSvg(color)
   return el
@@ -46,15 +56,38 @@ function makeMarkerEl(isFixed, isSelected) {
 // marker.setOpacity() instead updates the Marker's own internal state, so the
 // value survives future position updates. `filter` isn't touched by maplibre, so
 // that's still safe to set directly on the element.
-function applyMarkerStyle(marker, isFixed, isSelected, isClosed, isClosedTemporarily) {
+//
+// isHovered: the point's card is under the mouse in the list — red outline
+// and a soft red ring, raised above neighbouring markers. Just restyled in
+// place: the map never moves for it, so a hovered point outside the current
+// view simply isn't shown. (No scale-up: maplibre owns the element's
+// `transform` for positioning.)
+function applyMarkerStyle(
+  marker,
+  isFixed,
+  isSelected,
+  isClosed,
+  isClosedTemporarily,
+  isHovered = false
+) {
   const el = marker.getElement()
-  const border = isSelected ? '#dc2626' : isClosedTemporarily ? '#d97706' : '#111827'
+  const highlighted = isSelected || isHovered
+  const border = highlighted ? '#dc2626' : isClosedTemporarily ? '#d97706' : '#111827'
   const bg = isSelected ? '#dc2626' : '#ffffff'
-  const color = isSelected ? '#ffffff' : isClosedTemporarily ? '#d97706' : '#111827'
+  const color = isSelected
+    ? '#ffffff'
+    : isHovered
+      ? '#dc2626'
+      : isClosedTemporarily
+        ? '#d97706'
+        : '#111827'
   el.style.borderColor = border
   el.style.background = bg
-  el.style.filter = isClosed ? 'grayscale(1)' : 'none'
-  marker.setOpacity(isClosed ? '0.45' : isClosedTemporarily ? '0.7' : '1')
+  el.style.boxShadow = isHovered ? HOVER_SHADOW : MARKER_SHADOW
+  el.style.zIndex = highlighted ? '1' : ''
+  el.style.filter = isClosed && !highlighted ? 'grayscale(1)' : 'none'
+  const opacity = highlighted ? '1' : isClosed ? '0.45' : isClosedTemporarily ? '0.7' : '1'
+  marker.setOpacity(opacity)
   const svg = el.querySelector('svg')
   if (isFixed) {
     svg.setAttribute('stroke', color)
@@ -63,23 +96,63 @@ function applyMarkerStyle(marker, isFixed, isSelected, isClosed, isClosedTempora
   }
 }
 
-function buildMarkers(features, isFixed, map, onSelect, selectedPoint) {
+// Identifies the same spot across data sets — e.g. a mobile point that's out
+// on both of two dates comes back as a different object from each day's fetch
+// — so its marker can be kept instead of removed and re-added (which blinks).
+// Spots repeated within one set (two sessions at the same place) are told
+// apart by their order.
+function spotKeys(features) {
+  const counts = new Map()
   return features.map(feature => {
     const [lng, lat] = feature.geometry.coordinates
+    const base = `${lng},${lat},${feature.properties?.name ?? ''}`
+    const n = counts.get(base) ?? 0
+    counts.set(base, n + 1)
+    return `${base}#${n}`
+  })
+}
+
+// Brings a marker set in line with `features`: markers for spots still there
+// are kept (just pointed at the new feature object and restyled), the rest
+// removed, and new ones added. Returns the new entries.
+function syncMarkers(entries, features, isFixed, map, onSelect, selectedPoint, hoveredPoint) {
+  const previous = new Map(entries.map(entry => [entry.key, entry]))
+  const keys = spotKeys(features)
+  const next = features.map((feature, i) => {
+    const key = keys[i]
     const isClosed = isPermanentlyClosed(feature.properties?.opening_hours)
     const isClosedTemporarily = isTemporarilyClosed(feature.properties?.opening_hours)
-    // Respect the current selection when (re)building — e.g. after a legitimate
-    // data refetch — so a rebuild never silently drops the selected marker's style.
-    const isSelected = feature === selectedPoint
-    const el = makeMarkerEl(isFixed, isSelected)
-    el.addEventListener('click', e => {
-      e.stopPropagation()
-      onSelect(feature)
-    })
-    const marker = new maplibregl.Marker({ element: el }).setLngLat([lng, lat]).addTo(map)
-    applyMarkerStyle(marker, isFixed, isSelected, isClosed, isClosedTemporarily)
-    return { marker, feature, el, isFixed, isClosed, isClosedTemporarily }
+    let entry = previous.get(key)
+    if (entry) {
+      previous.delete(key)
+      Object.assign(entry, { feature, isClosed, isClosedTemporarily })
+    } else {
+      const el = makeMarkerEl(isFixed, false)
+      const marker = new maplibregl.Marker({ element: el })
+        .setLngLat(feature.geometry.coordinates)
+        .addTo(map)
+      const created = { key, marker, feature, el, isFixed, isClosed, isClosedTemporarily }
+      // Reads the entry at click time, since a kept marker's feature changes.
+      el.addEventListener('click', e => {
+        e.stopPropagation()
+        onSelect(created.feature)
+      })
+      entry = created
+    }
+    // Respect the current selection/hover when syncing — e.g. after a data
+    // refetch — so it never silently drops the selected marker's style.
+    applyMarkerStyle(
+      entry.marker,
+      isFixed,
+      feature === selectedPoint,
+      isClosed,
+      isClosedTemporarily,
+      feature === hoveredPoint
+    )
+    return entry
   })
+  previous.forEach(({ marker }) => marker.remove())
+  return next
 }
 
 const MapView = forwardRef(function MapView(
@@ -87,6 +160,7 @@ const MapView = forwardRef(function MapView(
     fixedPoints,
     mobilePoints,
     selectedPoint,
+    hoveredPoint,
     onSelectPoint,
     onUserLocation,
     onCenterChange,
@@ -144,11 +218,16 @@ const MapView = forwardRef(function MapView(
     })
 
     map.on('load', async () => {
-      // Auto-trigger if permission was already granted — no prompt, no extra dot
+      // Locate the user on open: centers the map on them if permission was
+      // already granted, or asks for it on a first visit. Skipped only when
+      // they've already denied it (re-asking can't show a prompt then — the
+      // geolocate button stays for that). Browsers without the Permissions
+      // API, or without 'geolocation' in it, just get the request.
+      let state = 'prompt'
       try {
-        const status = await navigator.permissions?.query({ name: 'geolocation' })
-        if (status?.state === 'granted') geolocate.trigger()
+        state = (await navigator.permissions?.query({ name: 'geolocation' }))?.state ?? state
       } catch {}
+      if (state !== 'denied') geolocate.trigger()
     })
 
     map.on('click', () => onSelectPoint(null))
@@ -163,28 +242,48 @@ const MapView = forwardRef(function MapView(
 
   useEffect(() => {
     if (!mapRef.current) return
-    fixedRef.current.forEach(({ marker }) => marker.remove())
-    fixedRef.current = buildMarkers(fixedPoints, true, mapRef.current, onSelectPoint, selectedPoint)
+    fixedRef.current = syncMarkers(
+      fixedRef.current,
+      fixedPoints,
+      true,
+      mapRef.current,
+      onSelectPoint,
+      selectedPoint,
+      hoveredPoint
+    )
   }, [fixedPoints])
 
   useEffect(() => {
     if (!mapRef.current) return
-    mobileRef.current.forEach(({ marker }) => marker.remove())
-    mobileRef.current = buildMarkers(
+    mobileRef.current = syncMarkers(
+      mobileRef.current,
       mobilePoints,
       false,
       mapRef.current,
       onSelectPoint,
-      selectedPoint
+      selectedPoint,
+      hoveredPoint
     )
   }, [mobilePoints])
 
-  // Update marker styles when selection changes without recreating markers
+  // Update marker styles when the selection or the hovered list card changes,
+  // without recreating markers.
   useEffect(() => {
     const all = [...fixedRef.current, ...mobileRef.current]
     all.forEach(({ feature, marker, isFixed, isClosed, isClosedTemporarily }) => {
-      applyMarkerStyle(marker, isFixed, feature === selectedPoint, isClosed, isClosedTemporarily)
+      applyMarkerStyle(
+        marker,
+        isFixed,
+        feature === selectedPoint,
+        isClosed,
+        isClosedTemporarily,
+        feature === hoveredPoint
+      )
     })
+  }, [selectedPoint, hoveredPoint])
+
+  // Selecting a point (not hovering one) centers the map on it.
+  useEffect(() => {
     if (!selectedPoint || !mapRef.current) return
     const [lng, lat] = selectedPoint.geometry.coordinates
     mapRef.current.flyTo({ center: [lng, lat], zoom: 14, offset: [0, 80], duration: 500 })

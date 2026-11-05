@@ -23,7 +23,7 @@ const DateNav = forwardRef(function DateNav(
   return (
     <nav
       ref={ref}
-      className="self-start flex items-end gap-4 md:gap-6 px-4 md:px-6 max-w-full overflow-x-auto bg-white rounded-2xl shadow-md"
+      className="self-start flex items-end gap-4 md:gap-6 px-4 md:px-6 max-w-full overflow-x-auto overflow-y-hidden bg-white rounded-2xl shadow-md"
     >
       <Tab
         top="Abierto"
@@ -50,7 +50,7 @@ function Tab({ top, bottom, active, onClick }) {
   return (
     <button
       onClick={onClick}
-      className={`flex flex-col items-center py-3 border-b-2 -mb-px transition-colors shrink-0 ${
+      className={`flex flex-col items-center py-3 border-b-2 transition-colors shrink-0 ${
         active
           ? 'border-red-600 text-red-600'
           : 'border-transparent text-gray-500 hover:text-gray-800'

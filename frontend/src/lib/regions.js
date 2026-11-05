@@ -4,12 +4,15 @@ import regionData from '../data/regions.json'
 
 // Per-region app data, one entry per region the ETL covers (the REGION
 // constants in etl/regions/), keyed by that exact name:
+//   - entity: short name of the body that runs blood donation there (e.g.
+//     "Centro de Transfusión"), the label for its "sangre" link in the info
+//     menu next to the header's region dropdown
 //   - links: the official page for each donation type ("sangre" is the
 //     region's transfusion centre / blood bank home page; "plasma" and
-//     "medula" are its pages for those, where it has one), opened from the
-//     info icon next to the header's region dropdown; "requirements" is the
-//     page listing who can donate (age, weight, intervals…), linked from the
-//     header's "Requisitos para donar" — these vary slightly by region
+//     "medula" are its pages for those, where it has one), both in the
+//     info menu next to the header's region dropdown; "requirements" is the
+//     page listing who can donate (age, weight, intervals…), which varies
+//     slightly by region, also in that menu
 //   - medula: how to register as a bone marrow donor there (see lib/medula.js)
 // Kept in alphabetical order, since its keys are also the header's region
 // dropdown options.
@@ -27,6 +30,11 @@ export function regionLink(region, donationType) {
 // The region's official page on who can donate blood, or null if unknown.
 export function requirementsLink(region) {
   return regionData[region]?.links?.requirements ?? null
+}
+
+// Short name of the body that runs blood donation in the region, or null.
+export function regionEntity(region) {
+  return regionData[region]?.entity ?? null
 }
 
 // regionBoundaries.json holds just these regions' real polygons, trimmed

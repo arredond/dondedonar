@@ -45,6 +45,7 @@ export default function ListPanel({
   mobilePoints,
   selectedPoint,
   onSelectPoint,
+  onHoverPoint,
   onClose,
   refPoint,
   locationGranted,
@@ -165,6 +166,10 @@ export default function ListPanel({
             isSelected={point === selectedPoint}
             distanceKm={dist}
             onClick={() => onSelectPoint(point)}
+            // Mouse only: a tap on a touch screen also fires enter (with no
+            // leave), which would leave its marker stuck highlighted.
+            onPointerEnter={e => e.pointerType === 'mouse' && onHoverPoint?.(point)}
+            onPointerLeave={e => e.pointerType === 'mouse' && onHoverPoint?.(null)}
             itemRef={point === selectedPoint ? selectedRef : null}
           />
         ))}

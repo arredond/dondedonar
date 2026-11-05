@@ -1,5 +1,6 @@
 {
   "Andalucía": {
+    "entity": "Servicio Andaluz de Salud",
     "links": {
       "sangre": "https://www.sspa.juntadeandalucia.es/servicioandaluzdesalud/ciudadania/donar-sangre",
       "plasma": "https://www.sspa.juntadeandalucia.es/servicioandaluzdesalud/ciudadania/donar-sangre/donar-plasma",
@@ -12,6 +13,7 @@
     }
   },
   "Aragón": {
+    "entity": "Banco de Sangre y Tejidos de Aragón",
     "links": {
       "sangre": "https://bancosangrearagon.org/",
       "plasma": "https://bancosangrearagon.org/donacion-de-plasma-sanguineo/",
@@ -25,6 +27,7 @@
     }
   },
   "Canarias": {
+    "entity": "Instituto Canario de Hemodonación",
     "links": {
       "sangre": "https://efectodonacion.com/",
       "plasma": "https://efectodonacion.com/plasma/",
@@ -51,6 +54,7 @@
     }
   },
   "Cantabria": {
+    "entity": "Hermandad de Donantes de Sangre",
     "links": {
       "sangre": "https://www.hdsc.org/",
       "requirements": "https://www.hdsc.org/donacion/"
@@ -62,6 +66,7 @@
     }
   },
   "Castilla y León": {
+    "entity": "Centro de Hemoterapia y Hemodonación",
     "links": {
       "sangre": "https://www.centrodehemoterapiacyl.es/",
       "plasma": "https://www.centrodehemoterapiacyl.es/aferesis/",
@@ -76,6 +81,7 @@
     }
   },
   "Castilla-La Mancha": {
+    "entity": "Sanidad Castilla-La Mancha",
     "links": {
       "sangre": "https://sanidad.castillalamancha.es/ciudadanos/hazte-donante-sangre/puntos-fijos-de-donacion",
       "medula": "https://sanidad.castillalamancha.es/ciudadanos/donantes/donantes-de-medula-osea-en-castilla-la-mancha",
@@ -89,6 +95,7 @@
     }
   },
   "Cataluña": {
+    "entity": "Banc de Sang i Teixits",
     "links": {
       "sangre": "https://www.bancsang.net/",
       "plasma": "https://www.bancsang.net/es/donaciones/plasma/",
@@ -103,6 +110,7 @@
     }
   },
   "Comunidad de Madrid": {
+    "entity": "Centro de Transfusión",
     "links": {
       "sangre": "https://www.comunidad.madrid/hospital/centrodetransfusion/",
       "plasma": "https://www.comunidad.madrid/hospital/centrodetransfusion/ciudadanos/es-plasma",
@@ -116,6 +124,7 @@
     }
   },
   "Comunidad Foral de Navarra": {
+    "entity": "ADONA",
     "links": {
       "sangre": "https://adona.es/es/",
       "plasma": "https://adona.es/es/dona-sangre/reservar-cita",
@@ -129,6 +138,7 @@
     }
   },
   "Comunidad Valenciana": {
+    "entity": "Centro de Transfusión",
     "links": {
       "sangre": "https://centro-transfusion.san.gva.es/",
       "plasma": "https://centro-transfusion.san.gva.es/es/plasmaferesi",
@@ -147,6 +157,7 @@
     }
   },
   "Extremadura": {
+    "entity": "Banco de Sangre de Extremadura",
     "links": {
       "sangre": "https://saludextremadura.ses.es/bancodesangre/",
       "medula": "https://admo.es/hazte-donante/",
@@ -160,6 +171,7 @@
     }
   },
   "Galicia": {
+    "entity": "ADOS",
     "links": {
       "sangre": "https://ados.sergas.gal/",
       "plasma": "https://ados.sergas.gal/cartafol/Sangue-Plasmaferesis",
@@ -174,6 +186,7 @@
     }
   },
   "Illes Balears": {
+    "entity": "Fundació Banc de Sang i Teixits",
     "links": {
       "sangre": "https://www.donasang.org/es_index.php",
       "plasma": "https://www.donasang.org/donacio-per-aferesis/es_index.php",
@@ -189,6 +202,7 @@
     }
   },
   "La Rioja": {
+    "entity": "Banco de Sangre de La Rioja",
     "links": {
       "sangre": "https://www.bancosangrerioja.org/",
       "plasma": "https://www.bancosangrerioja.org/donacion/donacion-aferesis",
@@ -202,6 +216,7 @@
     }
   },
   "Melilla": {
+    "entity": "Centro de Transfusión de Melilla",
     "links": {
       "sangre": "https://ingesa.sanidad.gob.es/melilla/Area-Sanitaria/Centros-de-Donaci-n.html"
     },
@@ -215,6 +230,7 @@
     }
   },
   "País Vasco": {
+    "entity": "Donantes de Sangre de Euskadi",
     "links": {
       "sangre": "https://donantesdesangre.eus/",
       "plasma": "https://donantesdesangre.eus/donar-plasma/",
@@ -229,6 +245,7 @@
     }
   },
   "Principado de Asturias": {
+    "entity": "Centro Comunitario de Sangre y Tejidos",
     "links": {
       "sangre": "https://donasturias.org/",
       "plasma": "https://donasturias.org/aferesis/",
@@ -242,6 +259,7 @@
     }
   },
   "Región de Murcia": {
+    "entity": "Centro Regional de Hemodonación",
     "links": {
       "sangre": "https://www.murciasalud.es/web/centro-regional-de-hemodonacion",
       "plasma": "https://www.murciasalud.es/web/centro-regional-de-hemodonacion/donacion-de-plasma",

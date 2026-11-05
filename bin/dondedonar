@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Start / stop the local frontend dev server (Vite) in the background.
 #
-#   bin/dondedonar start   # serves on all interfaces, so phones on the LAN can open it
+#   bin/dondedonar start   # serves HTTPS on all interfaces, so phones on the LAN can open it
+#                          # (self-signed cert, see frontend/vite.config.js)
 #   bin/dondedonar stop
 #
 # The server's PID and log live in .dondedonar/ at the repo root (gitignored).

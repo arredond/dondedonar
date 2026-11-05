@@ -16,7 +16,7 @@ uv run ruff check etl/
 Always start and stop the frontend dev server with the helper script, never `npm run dev` directly:
 
 ```bash
-bin/dondedonar start   # Vite in the background on all interfaces (LAN-reachable); prints the URLs
+bin/dondedonar start   # Vite in the background over HTTPS on all interfaces (LAN-reachable); prints the URLs
 bin/dondedonar stop
 ```
 

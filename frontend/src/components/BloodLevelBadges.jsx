@@ -14,18 +14,21 @@ const STATUS_COLOR = {
   stable: 'bg-green-600 text-white',
 }
 
-// Every state below renders in the same fixed-height slot (badge height), so
-// the header — and the map under it — doesn't jump while panning between
-// regions: badges, "no data" note and the empty loading state all take the
-// same vertical space.
-const SLOT = 'h-8 sm:h-9 flex items-center justify-end shrink-0'
+// On desktop every state below renders in the same fixed-height slot (badge
+// height) to the right of the title, so the header — and the map under it —
+// doesn't jump while panning between regions: badges, "no data" note and the
+// empty loading state all take the same vertical space. On mobile the badges
+// get their own row under the title instead, shown only for regions that have
+// blood levels (no row at all while loading or for regions without data).
+const SLOT = 'h-9 flex items-center justify-end shrink-0'
+const DESKTOP_ONLY_SLOT = `hidden sm:flex ${SLOT}`
 
 export default function BloodLevelBadges({ region }) {
   const { bloodLevels, hasLoaded } = useBloodLevels(region)
 
   // Still loading, or no region resolved yet — say nothing rather than
   // flash a "no data" message that a moment later turns out to be wrong.
-  if (!hasLoaded) return <div className={SLOT} />
+  if (!hasLoaded) return <div className={DESKTOP_ONLY_SLOT} />
 
   // Loaded, but genuinely nothing for this region (e.g. Castilla-La Mancha,
   // which has no blood-levels source at all — see etl/regions/castilla_la_mancha.py).
@@ -33,10 +36,10 @@ export default function BloodLevelBadges({ region }) {
   if (bloodLevels.length === 0) {
     const message = `En este momento no disponemos de niveles de donación para ${region}.`
     return (
-      <div className={SLOT}>
+      <div className={DESKTOP_ONLY_SLOT}>
         <p
           title={message}
-          className="max-w-[200px] sm:max-w-xs text-right text-[11px] leading-4 sm:text-xs sm:leading-[18px] italic text-gray-500 line-clamp-2"
+          className="max-w-xs text-right text-xs leading-[18px] italic text-gray-500 line-clamp-2"
         >
           {message}
         </p>
@@ -45,12 +48,12 @@ export default function BloodLevelBadges({ region }) {
   }
 
   return (
-    <div className={`${SLOT} gap-1 sm:gap-2`}>
+    <div className="flex items-center justify-start sm:justify-end gap-1.5 sm:gap-2 h-7 sm:h-9 shrink-0">
       {bloodLevels.map(({ blood_type: bloodType, status, label }) => (
         <span
           key={bloodType}
           title={label ?? undefined}
-          className={`w-5 h-5 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-[7px] sm:text-xs font-semibold select-none leading-none ${STATUS_COLOR[status] ?? 'bg-gray-400 text-white'}`}
+          className={`w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-semibold select-none leading-none ${STATUS_COLOR[status] ?? 'bg-gray-400 text-white'}`}
         >
           {bloodType}
         </span>

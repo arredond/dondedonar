@@ -2,7 +2,15 @@ import { getPointInfo } from '../lib/pointHelpers'
 import { isPermanentlyClosed, isTemporarilyClosed } from '../lib/openingHours'
 import OpenStatusBadge from './OpenStatusBadge'
 
-export default function PointCard({ point, isSelected, onClick, distanceKm, itemRef }) {
+export default function PointCard({
+  point,
+  isSelected,
+  onClick,
+  onPointerEnter,
+  onPointerLeave,
+  distanceKm,
+  itemRef,
+}) {
   const { isMobile, name, address, locality, hours, openingHours, region, mapsUrl } =
     getPointInfo(point)
   const closedPermanently = isPermanentlyClosed(openingHours)
@@ -13,6 +21,8 @@ export default function PointCard({ point, isSelected, onClick, distanceKm, item
       ref={itemRef}
       className={`px-6 py-4 cursor-pointer transition-colors ${isSelected ? 'bg-red-50' : 'hover:bg-gray-50'} ${closedTemporarily ? 'opacity-60' : ''}`}
       onClick={onClick}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
