@@ -1,6 +1,6 @@
 # Puntos de Donación de Sangre de la Comunidad de Madrid
 
-## [El Mapa](https://arredond.github.io/hirudo/)
+## [El Mapa](https://arredond.github.io/dondedonar/)
 
 ## El _qué_
 
@@ -37,7 +37,7 @@ a mano en la consola de GCP salvo la conexión inicial con GitHub.
 
 ## Peticiones / ruegos / dudas
 
-Simplemente abre [un _issue_](https://github.com/arredond/hirudo/issues/new) e intentaré
+Simplemente abre [un _issue_](https://github.com/arredond/dondedonar/issues/new) e intentaré
 atenderte lo antes posible.
 
 ## Desarrollo local

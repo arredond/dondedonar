@@ -321,6 +321,75 @@ wheels = [
 ]
 
 [[package]]
+name = "dondedonar"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "bs4" },
+    { name = "certifi" },
+    { name = "curl-cffi" },
+    { name = "dotenv" },
+    { name = "geoalchemy2" },
+    { name = "geopandas" },
+    { name = "googlemaps" },
+    { name = "here-location-services" },
+    { name = "html5lib" },
+    { name = "lxml" },
+    { name = "numpy" },
+    { name = "opening-hours-py" },
+    { name = "pandas" },
+    { name = "pillow" },
+    { name = "psycopg2-binary" },
+    { name = "python-dotenv" },
+    { name = "sqlalchemy" },
+    { name = "tqdm" },
+    { name = "unidecode" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pre-commit" },
+    { name = "pyrefly" },
+    { name = "pytest" },
+    { name = "pytest-mock" },
+    { name = "responses" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "bs4", specifier = ">=0.0.2" },
+    { name = "certifi", specifier = ">=2026.7.22" },
+    { name = "curl-cffi", specifier = ">=0.16.3" },
+    { name = "dotenv", specifier = ">=0.9.9" },
+    { name = "geoalchemy2", specifier = ">=0.20.0" },
+    { name = "geopandas", specifier = ">=1.1.4" },
+    { name = "googlemaps", specifier = ">=4.10.0" },
+    { name = "here-location-services", specifier = ">=0.4.0" },
+    { name = "html5lib", specifier = ">=1.1" },
+    { name = "lxml", specifier = ">=6.1.1" },
+    { name = "numpy", specifier = ">=2.5.2" },
+    { name = "opening-hours-py", specifier = ">=2.1.4" },
+    { name = "pandas", specifier = ">=3.0.5" },
+    { name = "pillow", specifier = ">=13.0.0" },
+    { name = "psycopg2-binary", specifier = ">=2.9.12" },
+    { name = "python-dotenv", specifier = ">=1.2.2" },
+    { name = "sqlalchemy", specifier = ">=2.0.52" },
+    { name = "tqdm", specifier = ">=4.70.0" },
+    { name = "unidecode", specifier = ">=1.4.0" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pre-commit", specifier = ">=4.7.0" },
+    { name = "pyrefly", specifier = ">=1.4.0" },
+    { name = "pytest", specifier = ">=9.1.1" },
+    { name = "pytest-mock", specifier = ">=3.15.1" },
+    { name = "responses", specifier = ">=0.26.3" },
+    { name = "ruff", specifier = ">=0.17.3" },
+]
+
+[[package]]
 name = "dotenv"
 version = "0.9.9"
 source = { registry = "https://pypi.org/simple" }
@@ -479,75 +548,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/49/a0/edad803a3ec247f7db37070e4793ccc30b67ca935bebf0b78f3998d52958/here-location-services-0.4.0.tar.gz", hash = "sha256:10523492f15e688e20b13763793171511c7fdfb9e44daef52774644cd6cbe7fb", size = 54896, upload-time = "2021-09-07T07:21:45.119Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ad/97/51ccf032afcf3b3273f5f12db76b03f3e276a1dafaa4f9a850ae81f3a2ac/here_location_services-0.4.0-py2.py3-none-any.whl", hash = "sha256:1320ba23dcdef7d720f51f48037b664e380fef5e59f011832dd505738f4b649c", size = 58094, upload-time = "2021-09-07T07:21:43.981Z" },
-]
-
-[[package]]
-name = "hirudo"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "bs4" },
-    { name = "certifi" },
-    { name = "curl-cffi" },
-    { name = "dotenv" },
-    { name = "geoalchemy2" },
-    { name = "geopandas" },
-    { name = "googlemaps" },
-    { name = "here-location-services" },
-    { name = "html5lib" },
-    { name = "lxml" },
-    { name = "numpy" },
-    { name = "opening-hours-py" },
-    { name = "pandas" },
-    { name = "pillow" },
-    { name = "psycopg2-binary" },
-    { name = "python-dotenv" },
-    { name = "sqlalchemy" },
-    { name = "tqdm" },
-    { name = "unidecode" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "pre-commit" },
-    { name = "pyrefly" },
-    { name = "pytest" },
-    { name = "pytest-mock" },
-    { name = "responses" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "bs4", specifier = ">=0.0.2" },
-    { name = "certifi", specifier = ">=2026.7.22" },
-    { name = "curl-cffi", specifier = ">=0.16.3" },
-    { name = "dotenv", specifier = ">=0.9.9" },
-    { name = "geoalchemy2", specifier = ">=0.20.0" },
-    { name = "geopandas", specifier = ">=1.1.4" },
-    { name = "googlemaps", specifier = ">=4.10.0" },
-    { name = "here-location-services", specifier = ">=0.4.0" },
-    { name = "html5lib", specifier = ">=1.1" },
-    { name = "lxml", specifier = ">=6.1.1" },
-    { name = "numpy", specifier = ">=2.5.2" },
-    { name = "opening-hours-py", specifier = ">=2.1.4" },
-    { name = "pandas", specifier = ">=3.0.5" },
-    { name = "pillow", specifier = ">=13.0.0" },
-    { name = "psycopg2-binary", specifier = ">=2.9.12" },
-    { name = "python-dotenv", specifier = ">=1.2.2" },
-    { name = "sqlalchemy", specifier = ">=2.0.52" },
-    { name = "tqdm", specifier = ">=4.70.0" },
-    { name = "unidecode", specifier = ">=1.4.0" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "pre-commit", specifier = ">=4.7.0" },
-    { name = "pyrefly", specifier = ">=1.4.0" },
-    { name = "pytest", specifier = ">=9.1.1" },
-    { name = "pytest-mock", specifier = ">=3.15.1" },
-    { name = "responses", specifier = ">=0.26.3" },
-    { name = "ruff", specifier = ">=0.17.3" },
 ]
 
 [[package]]

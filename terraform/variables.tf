@@ -19,7 +19,7 @@ variable "github_owner" {
 variable "github_repo" {
   description = "GitHub repository name"
   type        = string
-  default     = "hirudo"
+  default     = "dondedonar"
 }
 
 variable "github_app_installation_id" {

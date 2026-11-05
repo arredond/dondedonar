@@ -17,10 +17,10 @@ built automatically from GitHub via Cloud Build:
    dance once, up front, so `terraform apply` never needs a browser step):
    - Visit `https://github.com/apps/google-cloud-build`, click **Install**,
      choose your account, and select **Only select repositories** →
-     `arredond/hirudo`.
+     `arredond/dondedonar`.
    - Find the installation ID: `https://github.com/settings/installations`
      → open "Google Cloud Build" → the URL's trailing number.
-     For `arredond/hirudo` this is `160560634` (also kept in the gitignored
+     For `arredond/dondedonar` this is `160560634` (also kept in the gitignored
      `terraform/terraform.tfvars`).
    - Create a GitHub PAT (classic, scopes `repo`, `read:user`, `read:org` —
      or an equivalent fine-grained token scoped to this repo).
