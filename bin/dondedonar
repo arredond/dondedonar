@@ -2,7 +2,8 @@
 # Start / stop the local frontend dev server (Vite) in the background.
 #
 #   bin/dondedonar start   # serves HTTPS on all interfaces, so phones on the LAN can open it
-#                          # (self-signed cert, see frontend/vite.config.js)
+#                          # (mkcert-issued cert if mkcert is installed, else self-signed;
+#                          # see frontend/vite.config.js)
 #   bin/dondedonar stop
 #
 # The server's PID and log live in .dondedonar/ at the repo root (gitignored).
@@ -13,6 +14,9 @@ FRONTEND="$ROOT/frontend"
 STATE="$ROOT/.dondedonar"
 PIDFILE="$STATE/dev.pid"
 LOGFILE="$STATE/dev.log"
+CERT="$STATE/cert.pem"
+KEY="$STATE/key.pem"
+CERT_NAMES="$STATE/cert-names"
 
 running_pid() {
   [[ -f "$PIDFILE" ]] || return 1
@@ -30,6 +34,23 @@ print_urls() {
   grep -E "Local:|Network:" "$LOGFILE" | sed -E 's/\x1b\[[0-9;]*m//g'
 }
 
+# Issue a certificate from mkcert's local CA (trusted by this machine once
+# `mkcert -install` has run) for localhost and the machine's current LAN IPs,
+# so the browser doesn't warn. Reissued whenever the set of IPs changes (e.g.
+# on another network). Without mkcert, vite falls back to a self-signed cert.
+ensure_cert() {
+  command -v mkcert >/dev/null || return 0
+  local names
+  names="localhost 127.0.0.1 ::1 $(ifconfig | awk '/inet / && $2 != "127.0.0.1" {print $2}' | sort | xargs)"
+  if [[ -f "$CERT" && -f "$KEY" && "$(cat "$CERT_NAMES" 2>/dev/null)" == "$names" ]]; then
+    return 0
+  fi
+  # shellcheck disable=SC2086  # names is a space-separated list on purpose
+  mkcert -cert-file "$CERT" -key-file "$KEY" $names >/dev/null 2>&1
+  echo "$names" >"$CERT_NAMES"
+  echo "Issued an mkcert certificate for: $names"
+}
+
 start() {
   if pid="$(running_pid)"; then
     echo "Already running (PID $pid):"
@@ -43,6 +64,7 @@ start() {
   fi
 
   mkdir -p "$STATE"
+  ensure_cert
   # Job control (set -m) puts the server in its own process group, whose ID
   # is the PID we record; stop kills that whole group, since vite (and npm,
   # if it were in the chain) spawn child processes that would otherwise be

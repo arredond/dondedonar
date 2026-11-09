@@ -209,7 +209,8 @@ const MapView = forwardRef(function MapView(
   useEffect(() => {
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
+      // OpenFreeMap (https://openfreemap.org): free, no API key, no usage limits.
+      style: 'https://tiles.openfreemap.org/styles/bright',
       center: MADRID_CENTER,
       zoom: INITIAL_ZOOM,
       maxBounds: MAP_BOUNDS,
